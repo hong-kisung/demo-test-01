@@ -6,7 +6,7 @@ def DOCKER_IMAGE = 'edu01/spring-boot-cicd-demo'
 def K8S_NAMESPACE = 'edu01'
 def VERSION = 'develop'
  
-timestamp{
+timestamps {
     podTemplate(label:label,
         serviceAccount: "zcp-system-sa-${ZCP_USERID}",
         containers: [
