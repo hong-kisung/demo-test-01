@@ -32,15 +32,12 @@ timestamps {
 
             stage('BUILD DOCKER IMAGE') {
                 container('docker') {
-            
-            }
                     //TODO: Docker image build block
                 }
             }
 
             stage('DEPLOY') {
                 container('kubectl') {
-               
                     //TODO: kubectl command block
                     // deploy service, ingress, deployment
                 }
