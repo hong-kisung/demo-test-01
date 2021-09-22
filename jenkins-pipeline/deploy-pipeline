@@ -1,15 +1,15 @@
 @Library('retort-lib') _
 def label = "jenkins-${UUID.randomUUID().toString()}"
  
-def ZCP_USERID = 'edu019'
-def DOCKER_IMAGE = 'edu019/spring-boot-cicd-demo'
-def K8S_NAMESPACE = 'edu019'
+
+def DOCKER_IMAGE = 'demo01/spring-boot-cicd-demo'
+def K8S_NAMESPACE = 'demo'
 def VERSION = 'develop'
 
 
 timestamps { 
     podTemplate(label:label,
-        serviceAccount: "zcp-system-sa-${ZCP_USERID}",
+        serviceAccount: "demo-system-sa-demo-admin",
         containers: [
             containerTemplate(name: 'maven', image: 'maven:3.5.2-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
             containerTemplate(name: 'docker', image: 'docker:17-dind', ttyEnabled: true, command: 'dockerd-entrypoint.sh', privileged: true),
@@ -26,13 +26,15 @@ timestamps {
 
             stage('BUILD MAVEN') {
                 container('maven') {
-                    mavenBuild goal: 'clean package', systemProperties:['maven.repo.local':"/root/.m2/${ZCP_USERID}", 'maven.test.skip':'true']
+                    mavenBuild goal: 'clean package', systemProperties:['maven.repo.local':"/root/.m2/demo01", 'maven.test.skip':'true']
                 }
             }
 
             stage('BUILD DOCKER IMAGE') {
                 container('docker') {
                     //TODO: Docker image build block
+                    dockerCmd.build tag: "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:${VERSION}"
+                    dockerCmd.push registry: HARBOR_REGISTRY, imageName: DOCKER_IMAGE, imageVersion: VERSION, credentialsId: "HARBOR_CREDENTIALS"
                 }
             }
 
@@ -40,6 +42,9 @@ timestamps {
                 container('kubectl') {
                     //TODO: kubectl command block
                     // deploy service, ingress, deployment
+                    kubeCmd.apply file: 'k8s/service.yaml', namespace: K8S_NAMESPACE
+                    kubeCmd.apply file: 'k8s/ingress.yaml', namespace: K8S_NAMESPACE
+                    kubeCmd.apply file: 'k8s/deployment.yaml', namespace: K8S_NAMESPACE, wait: 300
                 }
             }
         }
