@@ -4,7 +4,7 @@ metadata:
   name: spring-boot-cicd-demo
 spec:
   rules:
-  - host: demo01.io
+  - host: demo.io
     http:
       paths:
       - path: /

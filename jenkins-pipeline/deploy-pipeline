@@ -41,7 +41,7 @@ timestamps {
             stage('DEPLOY') {
                 container('kubectl') {
                     //TODO: kubectl command block
-                    // deploy service, ingress, deployment
+                    // deploy service, ingress, deployment, test
                     kubeCmd.apply file: 'k8s/service.yaml', namespace: K8S_NAMESPACE
                     kubeCmd.apply file: 'k8s/ingress.yaml', namespace: K8S_NAMESPACE
                     kubeCmd.apply file: 'k8s/deployment.yaml', namespace: K8S_NAMESPACE, wait: 300
