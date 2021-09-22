@@ -2,7 +2,7 @@
 def label = "jenkins-${UUID.randomUUID().toString()}"
  
 
-def DOCKER_IMAGE = 'demo01/spring-boot-cicd-demo'
+def DOCKER_IMAGE = 'demo/spring-boot-cicd-demo'
 def K8S_NAMESPACE = 'demo'
 def VERSION = 'develop'
 
