@@ -5,7 +5,7 @@ metadata:
   labels:
     app: spring-boot-cicd-demo
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       app: spring-boot-cicd-demo
