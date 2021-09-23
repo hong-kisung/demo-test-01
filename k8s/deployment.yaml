@@ -25,9 +25,10 @@ spec:
     spec:
       imagePullSecrets:
         - name: harbor-secret
+      restartPolicy: Always
       containers:
       - name: spring-boot-cicd-demo
-        image: dev-registry-demo.cloudzcp.io/demo/spring-boot-cicd-demo:develop
+        image: dev-registry-demo.cloudzcp.io/demo/spring-boot-cicd-demo
         ports:
         - containerPort: 8080
           name: tomcat
