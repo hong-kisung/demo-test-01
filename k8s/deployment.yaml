@@ -5,7 +5,7 @@ metadata:
   labels:
     app: spring-boot-cicd-demo
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: spring-boot-cicd-demo
@@ -37,7 +37,7 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            cpu: 200m
+            cpu: 100m
             memory: 512Mi
           requests:
             cpu: 100m
